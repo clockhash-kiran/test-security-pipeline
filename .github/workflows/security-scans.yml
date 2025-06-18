@@ -1,4 +1,4 @@
-name: Security Scans
+name: Run Everything anyway
 
 on:
   push:
@@ -25,6 +25,7 @@ jobs:
     name: Build & Push Image
     runs-on: ubuntu-latest
     needs: pre-phase
+    if: always()
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -54,6 +55,7 @@ jobs:
     name: Mid Phase - Container Scan
     runs-on: ubuntu-latest
     needs: build-image
+    if: always()
     steps:
       - name: Run Mid Phase Security Scan
         uses: clockhash-kiran/scan-actions/mid-phase@main
@@ -67,6 +69,7 @@ jobs:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     needs: mid-phase
+    if: always()
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -81,6 +84,7 @@ jobs:
     name: Post Phase - Deployment Scan
     runs-on: ubuntu-latest
     needs: deploy
+    if: always()
     steps:
       - name: Run Post Phase Security Scan
         uses: clockhash-kiran/scan-actions/post-phase@main
