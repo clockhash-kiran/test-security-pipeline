@@ -52,7 +52,7 @@ jobs:
       - name: Run Mid Phase Security Scan
         uses: clockhash-kiran/scan-actions/mid-phase@main
         with:
-          target_url: "${{ needs.build-image.outputs.image_fullname }}"
+          target_url: "kirandockerch/test-security-image:latest"
           user_id: "1ee6f687-f458-450f-933f-263255cf866d"
           project_id: "2dffeec3-f4e7-417a-bf5b-d178d2e690b3"
           api_token: "${{ secrets.API_TOKEN }}"
