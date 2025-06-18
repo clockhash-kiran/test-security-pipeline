@@ -38,6 +38,18 @@ jobs:
       - name: Push Image to GHCR
         run: docker push ghcr.io/clockhash-kiran/test-security-image:latest
 
+      - name: Make GHCR Image Public
+        run: |
+          IMAGE="test-security-image"
+          PACKAGE_URL="https://api.github.com/user/packages/container/$IMAGE/versions"
+          VERSION_ID=$(curl -s -H "Authorization: token $GH_TOKEN" $PACKAGE_URL | jq '.[0].id')
+          curl -X PATCH -H "Authorization: token $GH_TOKEN" \
+               -H "Accept: application/vnd.github.v3+json" \
+               https://api.github.com/user/packages/container/$IMAGE/versions/$VERSION_ID \
+               -d '{"visibility":"public"}'
+        env:
+          GH_TOKEN: ${{ secrets.GHCR_PAT }}
+
   mid-phase:
     name: Mid Phase - Container Scan
     runs-on: ubuntu-latest
